@@ -1,0 +1,91 @@
+/* ── Reset & Base ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+.site-header {
+  padding: 0 40px;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.site-header .wp-block-navigation a {
+  color: #cccccc;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.site-header .wp-block-navigation a:hover { color: #f3832e; }
+
+.site-header .wp-block-navigation .wp-block-navigation-submenu__container {
+  background: #161616;
+  border-top: 2px solid #f3832e;
+  border-radius: 0;
+  min-width: 200px;
+}
+
+.site-header .wp-block-navigation .wp-block-navigation-submenu__container a {
+  padding: 10px 16px;
+  border-bottom: 1px solid #222;
+}
+
+/* ── Typography ───────────────────────────────────────────────── */
+h1, h2, h3 {
+  font-family: Oswald, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+a { color: #f3832e; transition: color 0.2s; }
+a:hover { color: #ffffff; }
+
+/* ── Buttons ──────────────────────────────────────────────────── */
+.wp-block-button__link {
+  border-radius: 0 !important;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 24px;
+}
+
+/* ── Utility ──────────────────────────────────────────────────── */
+.accent-line {
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: #f3832e;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.section-eyebrow {
+  color: #f3832e;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: Inter, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: #f3832e;
+}

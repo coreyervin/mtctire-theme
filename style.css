@@ -1,0 +1,657 @@
+/*
+Theme Name: MTC Tire
+Theme URI: https://mtctire.ca
+Description: Custom FSE block theme for MTC Tire Oakville
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 8.0
+Author: MTC Tire
+Text Domain: mtctire
+*/
+
+/* ── Reset & Base ─────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 18px;
+}
+
+body {
+  background-color: #111111;
+  color: #ffffff;
+}
+
+/* ── Header ───────────────────────────────────────────────────── */
+.site-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 0 40px;
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.site-header .wp-block-navigation a {
+  color: #cccccc;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0 16px;
+}
+
+.site-header .wp-block-navigation a:hover { color: #f3832e; }
+
+.site-header .wp-block-navigation .wp-block-navigation-submenu__container {
+  background: #161616;
+  border-top: 2px solid #f3832e;
+  border-radius: 0;
+  min-width: 200px;
+}
+
+.site-header .wp-block-navigation .wp-block-navigation-submenu__container a {
+  padding: 10px 16px;
+  border-bottom: 1px solid #222;
+}
+
+/* ── Typography ───────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: Oswald, sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+a { color: #f3832e; transition: color 0.2s; }
+a:hover { color: #ffffff; }
+
+/* ── Buttons ──────────────────────────────────────────────────── */
+.wp-block-button__link {
+  border-radius: 0 !important;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 12px 24px;
+}
+
+/* ── Block margin resets ──────────────────────────────────────── */
+/* WordPress block library adds margins that break our dark sections */
+.wp-block-column > .wp-block-paragraph,
+.wp-block-column > .wp-block-heading,
+.wp-block-group > .wp-block-paragraph {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+/* Restore margins in actual post content */
+.wp-block-post-content .wp-block-paragraph { margin-block-end: 1.25em; }
+
+/* ── Footer ───────────────────────────────────────────────────── */
+.site-footer a {
+  color: #555555;
+  text-decoration: none;
+}
+.site-footer a:hover { color: #f3832e; }
+
+.site-footer h4 {
+  color: #888888;
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.site-footer .wp-block-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.site-footer .wp-block-list li {
+  margin-bottom: 9px;
+  color: #444444;
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+
+/* ── WPForms Dark Theme ───────────────────────────────────────── */
+.wpforms-container .wpforms-form .wpforms-field-label,
+.wpforms-container .wpforms-form .wpforms-field-sublabel,
+.wpforms-container .wpforms-form label {
+  color: #cccccc !important;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1px !important;
+}
+.wpforms-container .wpforms-form input[type="text"],
+.wpforms-container .wpforms-form input[type="email"],
+.wpforms-container .wpforms-form input[type="tel"],
+.wpforms-container .wpforms-form input[type="number"],
+.wpforms-container .wpforms-form select,
+.wpforms-container .wpforms-form textarea {
+  background-color: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff !important;
+  border-radius: 0 !important;
+  padding: 10px 14px !important;
+  font-size: 0.9rem !important;
+  width: 100% !important;
+}
+.wpforms-container .wpforms-form input:focus,
+.wpforms-container .wpforms-form select:focus,
+.wpforms-container .wpforms-form textarea:focus {
+  border-color: #f3832e !important;
+  outline: none !important;
+}
+.wpforms-container .wpforms-form select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+.wpforms-container .wpforms-form .wpforms-submit {
+  background-color: #f3832e !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 1.5px !important;
+  padding: 14px 32px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s !important;
+}
+.wpforms-container .wpforms-form .wpforms-submit:hover {
+  background-color: #e0721e !important;
+}
+.wpforms-container .wpforms-form input::placeholder,
+.wpforms-container .wpforms-form textarea::placeholder {
+  color: #666666 !important;
+  opacity: 1 !important;
+}
+.wpforms-container .wpforms-form .wpforms-field-description {
+  color: #555555 !important;
+  font-size: 0.72rem !important;
+}
+.wpforms-container .wpforms-form .wpforms-field-limit-text {
+  color: #555555 !important;
+  font-size: 0.7rem !important;
+}
+
+/* ── Page Template ────────────────────────────────────────────── */
+.mtc-page-columns .wp-block-column:first-child {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ── Service Page Content ─────────────────────────────────────── */
+.mtc-service-content h2 {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 16px;
+  margin-top: 16px;
+}
+
+.mtc-service-intro {
+  color: #888888;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 32px;
+  border-left: 3px solid #f3832e;
+  padding-left: 16px;
+}
+
+.mtc-service-subheading {
+  font-size: 0.72rem !important;
+  color: #555555 !important;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px !important;
+  font-family: Inter, sans-serif !important;
+  font-weight: 600 !important;
+}
+
+.mtc-feature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  margin-bottom: 28px;
+}
+
+.mtc-feature-card {
+  background: #161616;
+  border-top: 2px solid #f3832e;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.mtc-feature-title {
+  font-family: Oswald, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+}
+
+.mtc-feature-desc {
+  font-size: 0.95rem;
+  color: #666666;
+  line-height: 1.5;
+}
+
+.mtc-brand-strip {
+  background: #0d0d0d;
+  border: 1px solid #222222;
+  padding: 14px 18px;
+  font-size: 0.95rem;
+  color: #555555;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.mtc-brand-strip .mtc-brand-label {
+  color: #888888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.65rem;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.mtc-service-note {
+  font-size: 0.95rem;
+  color: #555555;
+  font-style: italic;
+  border-top: 1px solid #222222;
+  padding-top: 20px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .mtc-feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Utility ──────────────────────────────────────────────────── */
+.accent-line {
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: #f3832e;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.section-eyebrow {
+  color: #f3832e;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-family: Inter, sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: #f3832e;
+}
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Header */
+  .site-header {
+    padding: 0 20px;
+    height: 64px;
+  }
+
+  /* Push nav to right edge, hide phone button */
+  .site-header .wp-block-navigation {
+    margin-left: auto;
+  }
+  .site-header .wp-block-buttons {
+    display: none;
+  }
+
+  /* Hamburger button style */
+  .site-header .wp-block-navigation__responsive-container-open {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+  }
+  .site-header .wp-block-navigation__responsive-container-open svg {
+    fill: #ffffff;
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Mobile nav overlay */
+  .site-header .wp-block-navigation__responsive-container.is-menu-open {
+    background: #111111;
+    padding: 80px 24px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  .site-header .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .site-header .wp-block-navigation__responsive-container.is-menu-open ul {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .site-header .wp-block-navigation__responsive-container.is-menu-open li {
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid #222222;
+  }
+  .site-header .wp-block-navigation__responsive-container.is-menu-open a {
+    font-size: 1.1rem;
+    padding: 16px 0;
+    display: block;
+    text-align: center;
+    color: #cccccc;
+    letter-spacing: 1.5px;
+  }
+  .site-header .wp-block-navigation__responsive-container.is-menu-open a:hover {
+    color: #f3832e;
+  }
+  .site-header .wp-block-navigation__responsive-container-close {
+    color: #ffffff;
+    background: transparent;
+    border: none;
+  }
+
+  /* Hero */
+  .wp-block-cover .wp-block-group {
+    padding-top: 48px !important;
+    padding-bottom: 48px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .wp-block-cover h1 {
+    font-size: 2.2rem !important;
+    line-height: 1.1;
+  }
+  .wp-block-cover p {
+    font-size: 0.82rem !important;
+  }
+  .wp-block-cover .section-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.55rem;
+    letter-spacing: 2px;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 100%;
+  }
+  .wp-block-cover .section-eyebrow::before {
+    display: none;
+  }
+
+  /* All sections — reduce 48px side padding to 20px */
+  .wp-block-group[style*="padding-left:48px"],
+  .wp-block-column[style*="padding-left:48px"] {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* Services grid card columns */
+  .wp-block-column[style*="padding-left:28px"] {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* About strip — reduce top/bottom padding when stacked */
+  .wp-block-column[style*="padding-top:60px"] {
+    padding-top: 36px !important;
+    padding-bottom: 36px !important;
+  }
+
+  /* Force services grid rows to always wrap on mobile */
+  .mtc-services-row.is-not-stacked-on-mobile {
+    flex-wrap: wrap !important;
+  }
+
+  /* Services grid — 2-col on mobile instead of stacking */
+  .mtc-services-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+  }
+  .mtc-services-row .wp-block-column {
+    flex: 0 0 calc(50% - 1px) !important;
+    width: calc(50% - 1px) !important;
+    min-width: 0;
+    margin-top: 2px;
+  }
+  .mtc-services-row .wp-block-column[style*="padding-left:28px"] {
+    padding: 16px 14px !important;
+  }
+  /* Hide decorative large number — saves space, not real content */
+  .mtc-services-row p[style*="font-size:2.5rem"] {
+    display: none !important;
+  }
+  .mtc-services-row h3 {
+    font-size: 0.78rem !important;
+    margin-bottom: 6px !important;
+  }
+  /* Compact description text */
+  .mtc-services-row .wp-block-column > p[style*="color:#666666"] {
+    font-size: 0.68rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 8px !important;
+  }
+  /* Compact learn more link */
+  .mtc-services-row .wp-block-column > p:last-child {
+    margin-top: 4px !important;
+  }
+  /* Compact the section heading */
+  .wp-block-group[style*="padding-top:48px"][style*="padding-bottom:36px"] {
+    padding-top: 28px !important;
+    padding-bottom: 20px !important;
+  }
+
+  /* About strip stats — keep as single row on mobile */
+  .mtc-stats-row {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+  }
+  .mtc-stats-row .wp-block-column {
+    width: auto !important;
+    flex: 1 !important;
+    min-width: 0;
+  }
+  .mtc-stats-row p[style*="font-size:1.8rem"] {
+    font-size: 1.3rem !important;
+  }
+
+  /* CTA banner — stack heading + button vertically */
+  .wp-block-group[style*="background-color:#f3832e"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 20px !important;
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* Footer — add side padding and stack columns with gap */
+  .site-footer {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+  .site-footer > .wp-block-columns {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .site-footer > .wp-block-columns > .wp-block-column {
+    width: 100% !important;
+  }
+  .site-footer > .wp-block-group {
+    flex-direction: column !important;
+    gap: 4px;
+  }
+
+  /* Page template — stack columns on mobile */
+  .mtc-page-columns {
+    flex-direction: column !important;
+  }
+  .mtc-page-columns .wp-block-column {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  /* Hero — reduce min-height so it doesn't swallow the screen */
+  .wp-block-cover[style*="min-height:480px"] {
+    min-height: 320px !important;
+  }
+
+  /* About strip photo — shorter when stacked */
+  .mtc-about-photo {
+    min-height: 220px !important;
+  }
+
+  /* CTA banner — reduce heading size, centre content, full-width button */
+  .wp-block-group[style*="background-color:#f3832e"] h2 {
+    font-size: 1.4rem !important;
+  }
+  .wp-block-group[style*="background-color:#f3832e"] {
+    align-items: center !important;
+    text-align: center;
+  }
+  .wp-block-group[style*="background-color:#f3832e"] .wp-block-buttons {
+    width: 100%;
+  }
+  .wp-block-group[style*="background-color:#f3832e"] .wp-block-button {
+    width: 100%;
+  }
+  .wp-block-group[style*="background-color:#f3832e"] .wp-block-button__link {
+    width: 100%;
+    text-align: center;
+    display: block;
+    box-sizing: border-box;
+  }
+
+  /* Brands — force 3-per-row on mobile */
+  .mtc-brand-card {
+    width: calc(33.333% - 8px) !important;
+    height: 70px !important;
+    padding: 4px 6px !important;
+  }
+
+  /* Reviews heading */
+  .mtc-reviews-inner h2 {
+    font-size: 1.3rem !important;
+  }
+
+  /* Footer columns — ensure bottom padding when stacked */
+  .site-footer .wp-block-columns {
+    padding-bottom: 32px;
+  }
+}
+
+/* ── Trust Bar (mobile 2×2 grid) ────────────────────────────── */
+@media (max-width: 768px) {
+  .mtc-trust-bar-inner {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    height: auto !important;
+    padding: 0 !important;
+    gap: 0 !important;
+  }
+  .mtc-trust-divider {
+    display: none !important;
+  }
+  .mtc-trust-item {
+    padding: 16px 12px !important;
+    justify-content: center !important;
+    border-right: 1px solid #222222 !important;
+    border-bottom: 1px solid #222222 !important;
+  }
+  /* Right column: Same-Day (pos 3) and Price Match (pos 7) */
+  .mtc-trust-item:nth-child(3),
+  .mtc-trust-item:nth-child(7) { border-right: none !important; }
+  /* Bottom row: Certified (pos 5) and Price Match (pos 7) */
+  .mtc-trust-item:nth-child(5),
+  .mtc-trust-item:nth-child(7) { border-bottom: none !important; }
+}
+
+/* ── Team Page ───────────────────────────────────────────────── */
+.mtc-team-photo-wrap {
+  margin-top: 32px;
+}
+
+@media (max-width: 768px) {
+  .mtc-team-photo-wrap {
+    margin-top: 16px;
+  }
+  .mtc-team-page {
+    padding: 0;
+  }
+  .mtc-team-intro {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .mtc-team-card-body {
+    padding: 20px 20px 28px;
+  }
+  .wp-block-group[style*="padding-top:56px"] {
+    padding-top: 32px !important;
+    padding-bottom: 32px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .wp-block-cover h1 {
+    font-size: 1.9rem !important;
+  }
+  .wp-block-cover[style*="min-height:480px"] {
+    min-height: 280px !important;
+  }
+  .site-header {
+    padding: 0 16px;
+  }
+  .site-footer {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+  .mtc-brand-card {
+    width: calc(33.333% - 8px) !important;
+    height: 62px !important;
+    padding: 4px 5px !important;
+  }
+}

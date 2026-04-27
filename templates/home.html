@@ -1,0 +1,41 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+<!-- wp:group {"tagName":"main","layout":{"type":"default"}} -->
+<main class="wp-block-group">
+  <!-- wp:group {"style":{"color":{"background":"#0d0d0d"},"border":{"bottom":{"color":"#1a1a1a","style":"solid","width":"1px"}},"spacing":{"padding":{"top":"48px","bottom":"48px","left":"48px","right":"48px"}}}} -->
+  <div class="wp-block-group" style="background-color:#0d0d0d;border-bottom:1px solid #1a1a1a;padding:48px">
+    <p class="section-eyebrow" style="margin-bottom:12px">MTC Tire Blog</p>
+    <h1 style="font-family:var(--wp--preset--font-family--oswald,Oswald,sans-serif);font-size:2rem;font-weight:700;text-transform:uppercase;color:#ffffff;margin:0">Tire Shop Oakville — Tips &amp; News</h1>
+  </div>
+  <!-- /wp:group -->
+  <!-- wp:query {"queryId":0,"query":{"perPage":9,"offset":0,"postType":"post","order":"desc","orderBy":"date"},"layout":{"type":"default"}} -->
+  <div class="wp-block-query" style="background-color:#0a0a0a;padding:48px 48px 64px">
+    <!-- wp:post-template {"style":{"spacing":{"blockGap":"2px"}},"layout":{"type":"grid","columnCount":3}} -->
+      <!-- wp:group {"style":{"color":{"background":"#111111"}}} -->
+      <div class="wp-block-group" style="background-color:#111111">
+        <!-- wp:post-featured-image {"isLink":true,"height":"200px"} /-->
+        <!-- wp:group {"style":{"spacing":{"padding":{"top":"20px","bottom":"24px","left":"24px","right":"24px"}}}} -->
+        <div class="wp-block-group" style="padding:20px 24px 24px">
+          <!-- wp:post-date {"style":{"color":{"text":"#555555"},"typography":{"fontSize":"0.62rem","textTransform":"uppercase","letterSpacing":"1px"}}} /-->
+          <!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--oswald)","fontSize":"1rem","fontWeight":"600","textTransform":"uppercase"},"spacing":{"margin":{"top":"6px","bottom":"8px"}}}} /-->
+          <!-- wp:post-excerpt {"moreText":"Read More →","style":{"color":{"text":"#666666"},"typography":{"fontSize":"0.72rem"}}} /-->
+        </div>
+        <!-- /wp:group -->
+      </div>
+      <!-- /wp:group -->
+    <!-- /wp:post-template -->
+    <!-- wp:query-no-results -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#555555"},"typography":{"fontSize":"0.85rem"}}} -->
+      <p style="color:#555555;font-size:0.85rem;text-align:center;padding:48px 0">No posts found.</p>
+      <!-- /wp:paragraph -->
+    <!-- /wp:query-no-results -->
+    <!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"48px"}}}} -->
+      <!-- wp:query-pagination-previous /-->
+      <!-- wp:query-pagination-numbers /-->
+      <!-- wp:query-pagination-next /-->
+    <!-- /wp:query-pagination -->
+  </div>
+  <!-- /wp:query -->
+  <!-- wp:pattern {"slug":"mtctire/cta-banner"} /-->
+</main>
+<!-- /wp:group -->
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->
