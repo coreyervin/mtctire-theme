@@ -15,11 +15,13 @@ Text Domain: mtctire
 
 html {
   font-size: 18px;
+  overflow-x: hidden;
 }
 
 body {
   background-color: #111111;
   color: #ffffff;
+  overflow-x: hidden;
 }
 
 /* ── Header ───────────────────────────────────────────────────── */
@@ -41,10 +43,10 @@ body {
   font-size: 0.65rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
   text-decoration: none;
   transition: color 0.2s;
-  padding: 0 16px;
+  padding: 0 10px;
 }
 
 .site-header .wp-block-navigation a:hover { color: #f3832e; }
@@ -98,13 +100,13 @@ a:hover { color: #ffffff; }
 
 /* ── Footer ───────────────────────────────────────────────────── */
 .site-footer a {
-  color: #555555;
+  color: #707070;
   text-decoration: none;
 }
 .site-footer a:hover { color: #f3832e; }
 
 .site-footer h4 {
-  color: #888888;
+  color: #999999;
   font-size: 0.72rem;
   letter-spacing: 2px;
   margin-bottom: 16px;
@@ -117,7 +119,7 @@ a:hover { color: #ffffff; }
 }
 .site-footer .wp-block-list li {
   margin-bottom: 9px;
-  color: #444444;
+  color: #585858;
   font-size: 0.72rem;
   line-height: 1.5;
 }
@@ -174,15 +176,15 @@ a:hover { color: #ffffff; }
 }
 .wpforms-container .wpforms-form input::placeholder,
 .wpforms-container .wpforms-form textarea::placeholder {
-  color: #666666 !important;
+  color: #808080 !important;
   opacity: 1 !important;
 }
 .wpforms-container .wpforms-form .wpforms-field-description {
-  color: #555555 !important;
+  color: #707070 !important;
   font-size: 0.72rem !important;
 }
 .wpforms-container .wpforms-form .wpforms-field-limit-text {
-  color: #555555 !important;
+  color: #707070 !important;
   font-size: 0.7rem !important;
 }
 
@@ -201,7 +203,7 @@ a:hover { color: #ffffff; }
 }
 
 .mtc-service-intro {
-  color: #888888;
+  color: #999999;
   font-size: 0.95rem;
   line-height: 1.7;
   margin-bottom: 32px;
@@ -211,7 +213,7 @@ a:hover { color: #ffffff; }
 
 .mtc-service-subheading {
   font-size: 0.72rem !important;
-  color: #555555 !important;
+  color: #707070 !important;
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 16px !important;
@@ -246,7 +248,7 @@ a:hover { color: #ffffff; }
 
 .mtc-feature-desc {
   font-size: 0.95rem;
-  color: #666666;
+  color: #808080;
   line-height: 1.5;
 }
 
@@ -255,13 +257,13 @@ a:hover { color: #ffffff; }
   border: 1px solid #222222;
   padding: 14px 18px;
   font-size: 0.95rem;
-  color: #555555;
+  color: #707070;
   margin-bottom: 28px;
   line-height: 1.6;
 }
 
 .mtc-brand-strip .mtc-brand-label {
-  color: #888888;
+  color: #999999;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -272,7 +274,7 @@ a:hover { color: #ffffff; }
 
 .mtc-service-note {
   font-size: 0.95rem;
-  color: #555555;
+  color: #707070;
   font-style: italic;
   border-top: 1px solid #222222;
   padding-top: 20px;
@@ -283,6 +285,21 @@ a:hover { color: #ffffff; }
   .mtc-feature-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ── Single Post ─────────────────────────────────────────────── */
+.mtc-post-header,
+.mtc-post-body {
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+}
+.mtc-post-body .wp-block-post-featured-image {
+  margin-bottom: 40px;
+}
+.mtc-post-body .wp-block-post-featured-image img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* ── Utility ──────────────────────────────────────────────────── */
@@ -540,9 +557,12 @@ a:hover { color: #ffffff; }
     min-height: 320px !important;
   }
 
-  /* About strip photo — shorter when stacked */
+  /* About strip photo — show full image uncropped on mobile */
   .mtc-about-photo {
-    min-height: 220px !important;
+    min-height: 0 !important;
+    aspect-ratio: 1920 / 1130 !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
   }
 
   /* CTA banner — reduce heading size, centre content, full-width button */
@@ -597,10 +617,19 @@ a:hover { color: #ffffff; }
     display: none !important;
   }
   .mtc-trust-item {
-    padding: 16px 12px !important;
+    padding: 14px 8px !important;
     justify-content: center !important;
     border-right: 1px solid #222222 !important;
     border-bottom: 1px solid #222222 !important;
+  }
+  .mtc-trust-label {
+    font-size: 0.56rem !important;
+    letter-spacing: 1px !important;
+    white-space: normal !important;
+    text-align: center !important;
+  }
+  .mtc-trust-icon {
+    font-size: 0.75rem !important;
   }
   /* Right column: Same-Day (pos 3) and Price Match (pos 7) */
   .mtc-trust-item:nth-child(3),
@@ -634,6 +663,15 @@ a:hover { color: #ffffff; }
     padding-bottom: 32px !important;
   }
 }
+
+/* ── Inline gray text — lighten sitewide ─────────────────────── */
+/* Catches hardcoded inline style="color:#XXXXXX" in patterns & DB content */
+[style*="color:#aaaaaa"] { color: #bbbbbb !important; }
+[style*="color:#888888"] { color: #999999 !important; }
+[style*="color:#666666"] { color: #808080 !important; }
+[style*="color:#555555"] { color: #707070 !important; }
+[style*="color:#444444"] { color: #585858 !important; }
+[style*="color:#333333"] { color: #484848 !important; }
 
 @media (max-width: 480px) {
   .wp-block-cover h1 {

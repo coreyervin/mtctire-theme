@@ -121,7 +121,7 @@
 }
 .mtc-service-row-desc {
   font-size: 0.78rem;
-  color: #555555;
+  color: #999999;
   flex: 1;
   line-height: 1.5;
 }
