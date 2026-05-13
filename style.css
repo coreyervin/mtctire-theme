@@ -14,7 +14,7 @@ Text Domain: mtctire
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  font-size: 18px;
+  font-size: 20px;
   overflow-x: hidden;
 }
 
@@ -100,13 +100,13 @@ a:hover { color: #ffffff; }
 
 /* ── Footer ───────────────────────────────────────────────────── */
 .site-footer a {
-  color: #707070;
+  color: #999999;
   text-decoration: none;
 }
 .site-footer a:hover { color: #f3832e; }
 
 .site-footer h4 {
-  color: #999999;
+  color: #bbbbbb;
   font-size: 0.72rem;
   letter-spacing: 2px;
   margin-bottom: 16px;
@@ -119,7 +119,7 @@ a:hover { color: #ffffff; }
 }
 .site-footer .wp-block-list li {
   margin-bottom: 9px;
-  color: #585858;
+  color: #888888;
   font-size: 0.72rem;
   line-height: 1.5;
 }
@@ -176,15 +176,15 @@ a:hover { color: #ffffff; }
 }
 .wpforms-container .wpforms-form input::placeholder,
 .wpforms-container .wpforms-form textarea::placeholder {
-  color: #808080 !important;
+  color: #aaaaaa !important;
   opacity: 1 !important;
 }
 .wpforms-container .wpforms-form .wpforms-field-description {
-  color: #707070 !important;
+  color: #999999 !important;
   font-size: 0.72rem !important;
 }
 .wpforms-container .wpforms-form .wpforms-field-limit-text {
-  color: #707070 !important;
+  color: #999999 !important;
   font-size: 0.7rem !important;
 }
 
@@ -203,7 +203,7 @@ a:hover { color: #ffffff; }
 }
 
 .mtc-service-intro {
-  color: #999999;
+  color: #bbbbbb;
   font-size: 0.95rem;
   line-height: 1.7;
   margin-bottom: 32px;
@@ -213,7 +213,7 @@ a:hover { color: #ffffff; }
 
 .mtc-service-subheading {
   font-size: 0.72rem !important;
-  color: #707070 !important;
+  color: #999999 !important;
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 16px !important;
@@ -248,7 +248,7 @@ a:hover { color: #ffffff; }
 
 .mtc-feature-desc {
   font-size: 0.95rem;
-  color: #808080;
+  color: #aaaaaa;
   line-height: 1.5;
 }
 
@@ -257,13 +257,13 @@ a:hover { color: #ffffff; }
   border: 1px solid #222222;
   padding: 14px 18px;
   font-size: 0.95rem;
-  color: #707070;
+  color: #999999;
   margin-bottom: 28px;
   line-height: 1.6;
 }
 
 .mtc-brand-strip .mtc-brand-label {
-  color: #999999;
+  color: #bbbbbb;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -274,7 +274,7 @@ a:hover { color: #ffffff; }
 
 .mtc-service-note {
   font-size: 0.95rem;
-  color: #707070;
+  color: #999999;
   font-style: italic;
   border-top: 1px solid #222222;
   padding-top: 20px;
@@ -666,12 +666,12 @@ a:hover { color: #ffffff; }
 
 /* ── Inline gray text — lighten sitewide ─────────────────────── */
 /* Catches hardcoded inline style="color:#XXXXXX" in patterns & DB content */
-[style*="color:#aaaaaa"] { color: #bbbbbb !important; }
-[style*="color:#888888"] { color: #999999 !important; }
-[style*="color:#666666"] { color: #808080 !important; }
-[style*="color:#555555"] { color: #707070 !important; }
-[style*="color:#444444"] { color: #585858 !important; }
-[style*="color:#333333"] { color: #484848 !important; }
+[style*="color:#aaaaaa"] { color: #cccccc !important; }
+[style*="color:#888888"] { color: #b8b8b8 !important; }
+[style*="color:#666666"] { color: #aaaaaa !important; }
+[style*="color:#555555"] { color: #999999 !important; }
+[style*="color:#444444"] { color: #888888 !important; }
+[style*="color:#333333"] { color: #777777 !important; }
 
 @media (max-width: 480px) {
   .wp-block-cover h1 {

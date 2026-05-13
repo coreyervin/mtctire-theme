@@ -14,13 +14,13 @@
     </div>
     <span class="mtc-trust-divider"></span>
     <div class="mtc-trust-item">
-      <span class="mtc-trust-icon">⚡</span>
-      <span class="mtc-trust-label">Same-Day Service</span>
+      <span class="mtc-trust-icon">✔&#xFE0E;</span>
+      <span class="mtc-trust-label">Certified Technicians</span>
     </div>
     <span class="mtc-trust-divider"></span>
     <div class="mtc-trust-item">
-      <span class="mtc-trust-icon">✔&#xFE0E;</span>
-      <span class="mtc-trust-label">Certified Technicians</span>
+      <span class="mtc-trust-icon">⚙&#xFE0E;</span>
+      <span class="mtc-trust-label">DriveON Inspections</span>
     </div>
     <span class="mtc-trust-divider"></span>
     <div class="mtc-trust-item">

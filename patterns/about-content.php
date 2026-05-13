@@ -60,6 +60,10 @@ $uploads = get_site_url() . '/wp-content/uploads/2019/09/';
       <span class="mtc-feature-title">Robert Durdin</span>
       <span class="mtc-feature-desc">Tire Sales &amp; Service Advisor · Licensed Automotive Technician</span>
     </div>
+    <div class="mtc-feature-card">
+      <span class="mtc-feature-title">Gordon Cox</span>
+      <span class="mtc-feature-desc">Tire Sales &amp; Service Advisor</span>
+    </div>
   </div>
 
   <!-- Shop photos strip -->

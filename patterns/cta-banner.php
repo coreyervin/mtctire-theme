@@ -11,6 +11,7 @@
   <div class="wp-block-group">
     <!-- wp:paragraph {"style":{"color":{"text":"rgba(255,255,255,0.7)"},"typography":{"fontSize":"0.65rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:rgba(255,255,255,0.7);font-size:0.65rem;text-transform:uppercase;letter-spacing:2px">Ready to Book?</p><!-- /wp:paragraph -->
     <!-- wp:heading {"level":2,"style":{"color":{"text":"#ffffff"},"typography":{"fontSize":"2rem"}}} --><h2 style="color:#ffffff;font-size:2rem">Get a Quote on Your Next Set of Tires</h2><!-- /wp:heading -->
+    <!-- wp:paragraph {"style":{"color":{"text":"rgba(255,255,255,0.85)"},"typography":{"fontSize":"0.78rem"},"spacing":{"margin":{"top":"10px","bottom":"0"}}}} --><p style="color:rgba(255,255,255,0.85);font-size:0.78rem;margin-top:10px;margin-bottom:0">Tell us your vehicle and tire size and we'll find the best tire for your budget.</p><!-- /wp:paragraph -->
   </div>
   <!-- /wp:group -->
   <!-- wp:buttons -->
