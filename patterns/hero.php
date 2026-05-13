@@ -19,7 +19,7 @@
       <h1 style="font-size:4rem;color:#ffffff">Tires Done Right.</h1>
       <!-- /wp:heading -->
       <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.875rem"},"spacing":{"margin":{"bottom":"32px"}}}} -->
-      <p style="color:#aaaaaa;font-size:0.875rem">Expert tire sales, fitting, seasonal storage, wheel alignment, brakes and full automotive service. Serving Oakville since 2005.</p>
+      <p style="color:#aaaaaa;font-size:0.875rem">Expert tire sales, fitting, on-site tire storage, wheel alignment, brakes and full automotive service. Serving Oakville since 2005.</p>
       <!-- /wp:paragraph -->
       <!-- wp:buttons -->
       <div class="wp-block-buttons">

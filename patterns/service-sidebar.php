@@ -20,7 +20,7 @@
     <h4>Our Services</h4>
     <ul>
       <li><a href="/services/tires-wheels/">Tires &amp; Wheels</a></li>
-      <li><a href="/services/tire-storage/">Tire Storage</a></li>
+      <li><a href="/services/tire-storage/">On-Site Tire Storage</a></li>
       <li><a href="/services/automotive-repairs-maintenance/">Auto Repairs</a></li>
       <li><a href="/services/wheel-alignment-oakville/">Wheel Alignment</a></li>
       <li><a href="/services/brake-inspection-repairs-oakville/">Brake Inspection</a></li>

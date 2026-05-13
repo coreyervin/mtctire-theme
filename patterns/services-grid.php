@@ -22,7 +22,7 @@
         <span class="mtc-service-row-arrow">→</span>
       </a>
       <a href="/services/tire-storage/" class="mtc-service-row">
-        <span class="mtc-service-row-name">Tire Storage</span>
+        <span class="mtc-service-row-name">On-Site Tire Storage</span>
         <span class="mtc-service-row-desc">Secure indoor seasonal storage — we handle the swap</span>
         <span class="mtc-service-row-arrow">→</span>
       </a>

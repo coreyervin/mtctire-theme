@@ -8,7 +8,7 @@
 <!-- wp:html -->
 <div class="mtc-service-content">
   <p class="section-eyebrow">Tire Storage</p>
-  <h2>Secure Seasonal Tire Storage in Oakville</h2>
+  <h2>On-Site Tire Storage in Oakville</h2>
   <p class="mtc-service-intro">No garage space? No problem. MTC Tire Oakville offers secure on-site indoor seasonal storage so your off-season tires are kept in perfect condition — and ready to go when you need them.</p>
 
   <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-4.jpg" alt="Stacked seasonal tires in MTC Tire Oakville's indoor storage facility" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">

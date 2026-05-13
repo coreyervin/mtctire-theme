@@ -332,8 +332,28 @@ a:hover { color: #ffffff; }
   background: #f3832e;
 }
 
-/* ── Mobile ───────────────────────────────────────────────────── */
-@media (max-width: 768px) {
+/* ── Navbar: override WP's 600px hamburger breakpoint to 1024px ── */
+/* Between 601–1024px: force hamburger on, full nav off */
+@media (min-width: 601px) and (max-width: 1024px) {
+  .site-header .wp-block-navigation__responsive-container-open {
+    display: flex !important;
+  }
+  .site-header .wp-block-navigation .wp-block-navigation__responsive-container:not(.is-menu-open) {
+    display: none !important;
+  }
+}
+/* Above 1024px: force full nav on, hamburger off */
+@media (min-width: 1025px) {
+  .site-header .wp-block-navigation__responsive-container-open {
+    display: none !important;
+  }
+  .site-header .wp-block-navigation .wp-block-navigation__responsive-container:not(.is-menu-open) {
+    display: block !important;
+  }
+}
+
+/* ── Navbar mobile (hamburger breakpoint) ─────────────────────── */
+@media (max-width: 1024px) {
 
   /* Header */
   .site-header {
@@ -408,6 +428,10 @@ a:hover { color: #ffffff; }
     background: transparent;
     border: none;
   }
+}
+
+/* ── Mobile ───────────────────────────────────────────────────── */
+@media (max-width: 768px) {
 
   /* Hero */
   .wp-block-cover .wp-block-group {
@@ -605,7 +629,7 @@ a:hover { color: #ffffff; }
 }
 
 /* ── Trust Bar (mobile 2×2 grid) ────────────────────────────── */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .mtc-trust-bar-inner {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;

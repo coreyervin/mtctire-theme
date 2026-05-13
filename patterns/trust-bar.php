@@ -19,8 +19,8 @@
     </div>
     <span class="mtc-trust-divider"></span>
     <div class="mtc-trust-item">
-      <span class="mtc-trust-icon">⚙&#xFE0E;</span>
-      <span class="mtc-trust-label">DriveON Inspections</span>
+      <span class="mtc-trust-icon">◎</span>
+      <span class="mtc-trust-label">Nokian Tyres Supplier</span>
     </div>
     <span class="mtc-trust-divider"></span>
     <div class="mtc-trust-item">
