@@ -11,7 +11,7 @@
   <h2>Brake Inspection &amp; Repair in Oakville</h2>
   <p class="mtc-service-intro">Your brakes are the most important safety system on your vehicle. If something feels off — grinding, squealing, or a soft pedal — don't wait. We'll get you in fast and give you an honest assessment.</p>
 
-  <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-30.jpg" alt="MTC Tire mechanic inspecting brake and wheel components" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">
+  <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-30.jpg" alt="MTC Tire Oakville mechanic inspecting brake and wheel components" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">
 
   <h3 class="mtc-service-subheading">What We Inspect</h3>
   <div class="mtc-feature-grid">

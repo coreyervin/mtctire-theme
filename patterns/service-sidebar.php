@@ -11,7 +11,7 @@
   <!-- CTA box -->
   <div class="mtc-sidebar-cta">
     <h3>Get a Quote</h3>
-    <p>Tell us your vehicle and we'll find the best tire for your budget.</p>
+    <p>Tell us your vehicle and tire size and we'll find the best tire for your budget.</p>
     <a href="/contact/" class="mtc-sidebar-btn">Contact Us →</a>
   </div>
 
@@ -24,7 +24,7 @@
       <li><a href="/services/automotive-repairs-maintenance/">Auto Repairs</a></li>
       <li><a href="/services/wheel-alignment-oakville/">Wheel Alignment</a></li>
       <li><a href="/services/brake-inspection-repairs-oakville/">Brake Inspection</a></li>
-      <li><a href="/services/fleet-cards/">Fleet Cards</a></li>
+      <li><a href="/services/fleet-cards/">DriveON Inspections</a></li>
     </ul>
   </div>
 

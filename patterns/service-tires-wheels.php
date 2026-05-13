@@ -11,7 +11,7 @@
   <h2>Oakville's Widest Tire Selection</h2>
   <p class="mtc-service-intro">Whether you need all-season, all-weather, winter, or performance tires, MTC Tire Oakville carries the brands and sizes to fit every vehicle and budget. We do the research so you don't have to — just tell us your vehicle, tire size, and what you're looking for.</p>
 
-  <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-22.jpg" alt="MTC Tire team mounting tires on service machines" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">
+  <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-22.jpg" alt="MTC Tire Oakville team mounting tires on service machines" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">
 
   <h3 class="mtc-service-subheading">What's Included</h3>
   <div class="mtc-feature-grid">

@@ -11,7 +11,7 @@
   <h2>Precision Wheel Alignment in Oakville</h2>
   <p class="mtc-service-intro">Is your car pulling to one side, or are your tires wearing unevenly? A proper wheel alignment extends tire life, improves fuel efficiency, and keeps your vehicle handling safely.</p>
 
-  <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-12.jpg" alt="MTC Tire technician performing computerized wheel alignment on a Jaguar F-Pace" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">
+  <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-12.jpg" alt="MTC Tire Oakville technician performing computerized wheel alignment on a Jaguar F-Pace" style="width:100%;height:280px;object-fit:cover;display:block;margin:24px 0 32px;border-radius:2px">
 
   <h3 class="mtc-service-subheading">Signs You Need an Alignment</h3>
   <div class="mtc-feature-grid">

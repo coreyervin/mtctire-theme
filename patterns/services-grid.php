@@ -42,8 +42,8 @@
         <span class="mtc-service-row-arrow">→</span>
       </a>
       <a href="/services/fleet-cards/" class="mtc-service-row">
-        <span class="mtc-service-row-name">Fleet Cards</span>
-        <span class="mtc-service-row-desc">Simplified billing and priority service for Oakville businesses</span>
+        <span class="mtc-service-row-name">DriveON Inspections</span>
+        <span class="mtc-service-row-desc">Registered MTO inspection centre — Safety Standards Certificates issued here</span>
         <span class="mtc-service-row-arrow">→</span>
       </a>
     </div>

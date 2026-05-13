@@ -6,6 +6,7 @@
  */
 $uploads = get_site_url() . '/wp-content/uploads/2017/05/';
 $brands = [
+    [ 'file' => 'nokian.jpg',              'alt' => 'Nokian Tyres' ],
     [ 'file' => 'bridgestone.jpg',         'alt' => 'Bridgestone' ],
     [ 'file' => 'michelin.jpg',            'alt' => 'Michelin' ],
     [ 'file' => 'goodyear.jpg',            'alt' => 'Goodyear' ],
@@ -20,7 +21,7 @@ $brands = [
 <!-- wp:html -->
 <section class="mtc-brands-section">
   <div class="mtc-brands-inner">
-    <p class="section-eyebrow" style="text-align:center;justify-content:center;margin-bottom:32px">Brands We Work With</p>
+    <p class="section-eyebrow" style="text-align:center;justify-content:center;margin-bottom:32px">Select Quality Brands We Carry</p>
     <div class="mtc-brands-grid">
       <?php foreach ( $brands as $brand ) : ?>
       <div class="mtc-brand-card">

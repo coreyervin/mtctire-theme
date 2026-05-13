@@ -37,7 +37,7 @@ $uploads = get_site_url() . '/wp-content/uploads/2019/09/';
       <p>Howard Cox is an award-winning licensed automotive technician who has been serving the Oakville area for over 25 years. His love for cars began at 16, fixing up and modifying vehicles in his parents' driveway.</p>
       <p>Howard apprenticed as an automotive technician while attending Mohawk College, where he received the <strong>Outstanding Achievement Award</strong> for the highest mark in his graduating class. He went on to earn a Business Diploma from Sheridan College.</p>
       <p>After graduating in 1988, Howard opened his first shop on Speers Road. The business grew into a large Petro-Canada Certigard operation before MTC Tire Oakville was founded in 2002. Howard has also been actively involved in auto racing for years, translating that hands-on knowledge of vehicle dynamics directly into the work done for customers.</p>
-      <p>Many things have changed since 1988 — one thing hasn't: Howard's commitment to quality, personal service, and integrity in everything MTC Tire does.</p>
+      <p>Many things have changed since 1988 — one thing hasn't: the commitment to quality, personal service, and integrity in everything MTC Tire Oakville does.</p>
     </div>
   </div>
 
@@ -68,9 +68,9 @@ $uploads = get_site_url() . '/wp-content/uploads/2019/09/';
 
   <!-- Shop photos strip -->
   <div class="mtc-about-photo-strip">
-    <img src="<?php echo esc_url( $uploads . 'mtctire_photoshoot_aug2019-43.jpg' ); ?>" alt="MTC Tire shop" loading="lazy" />
-    <img src="<?php echo esc_url( $uploads . 'mtctire_photoshoot_aug2019-44.jpg' ); ?>" alt="MTC Tire team" loading="lazy" />
-    <img src="<?php echo esc_url( $uploads . 'mtctire_photoshoot_aug2019-47.jpg' ); ?>" alt="MTC Tire service" loading="lazy" />
+    <img src="<?php echo esc_url( $uploads . 'mtctire_photoshoot_aug2019-43.jpg' ); ?>" alt="MTC Tire Oakville shop" loading="lazy" />
+    <img src="<?php echo esc_url( $uploads . 'mtctire_photoshoot_aug2019-44.jpg' ); ?>" alt="MTC Tire Oakville team" loading="lazy" />
+    <img src="<?php echo esc_url( $uploads . 'mtctire_photoshoot_aug2019-47.jpg' ); ?>" alt="MTC Tire Oakville service" loading="lazy" />
   </div>
 
   <!-- Drop-off note -->
