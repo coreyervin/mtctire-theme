@@ -7,8 +7,8 @@
 ?>
 <!-- wp:html -->
 <div class="mtc-service-content">
-  <p class="section-eyebrow">DriveON Inspection Centre</p>
-  <h2>MTC Tire Oakville is a Registered DriveON Vehicle Inspection Centre</h2>
+  <p class="section-eyebrow">Provincial Safety Inspection Centre</p>
+  <h2>MTC Tire Oakville is an Approved Provincial Safety Inspection Centre</h2>
   <p class="mtc-service-intro">In late 2024, the Ontario government modernized the vehicle safety inspection process. MTC Tire Oakville is now a registered DriveON vehicle inspection centre, licensed by the Ministry of Transportation (MTO) to issue Safety Standards Certificates.</p>
 
   <img src="/wp-content/uploads/2019/09/mtctire_photoshoot_aug2019-34.jpg" alt="Vehicle entering MTC Tire Oakville for safety inspection" style="width:100%;height:280px;object-fit:cover;object-position:center 40%;display:block;margin:24px 0 32px;border-radius:2px">
@@ -16,7 +16,7 @@
   <h3 class="mtc-service-subheading">What You Need to Know</h3>
   <div class="mtc-feature-grid">
     <div class="mtc-feature-card">
-      <span class="mtc-feature-title">New DriveON Centres</span>
+      <span class="mtc-feature-title">New Provincial Safety Inspection Information</span>
       <span class="mtc-feature-desc">The Ontario government changed vehicle safety inspections in late 2024. MTC Tire Oakville is a registered DriveON vehicle inspection centre licensed by the MTO — only legitimate, registered shops can issue Safety Standards Certificates.</span>
     </div>
     <div class="mtc-feature-card">
@@ -29,7 +29,7 @@
     </div>
     <div class="mtc-feature-card">
       <span class="mtc-feature-title">Booking Your Inspection</span>
-      <span class="mtc-feature-desc">We'll usually need your vehicle for the day for a safety inspection. Call us to book your appointment in advance — we'll walk you through what to bring and what to expect.</span>
+      <span class="mtc-feature-desc">We'll usually need your vehicle for the day to conduct a provincial safety inspection. A safety standards certificate is valid for 36 calendar days after the inspection. Call us to book your appointment.</span>
     </div>
   </div>
 

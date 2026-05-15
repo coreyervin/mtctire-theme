@@ -34,7 +34,7 @@
   </div>
 
   <div class="mtc-brand-strip">
-    <span class="mtc-brand-label">We carry select quality brands, including:</span>
+    <span class="mtc-brand-label">We carry all brands, including:</span>
     Nokian &nbsp;·&nbsp; Michelin &nbsp;·&nbsp; Bridgestone &nbsp;·&nbsp; Goodyear &nbsp;·&nbsp; Continental &nbsp;·&nbsp; Pirelli &nbsp;·&nbsp; Yokohama &nbsp;·&nbsp; Hankook &nbsp;·&nbsp; BFGoodrich
   </div>
 
