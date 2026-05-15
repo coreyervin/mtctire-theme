@@ -53,7 +53,7 @@ add_action( 'wp_head', function () {
         '@context'    => 'https://schema.org',
         '@type'       => 'AutoRepair',
         'name'        => 'MTC Tire Oakville Inc.',
-        'image'       => get_site_url() . '/wp-content/uploads/2017/05/mtctire-logo.png',
+        'image'       => 'https://mtctire.ca/wp-content/uploads/2017/05/mtctire-logo.png',
         'url'         => 'https://mtctire.ca',
         'telephone'   => '+19058476665',
         'email'       => 'tiresales@mtctire.ca',

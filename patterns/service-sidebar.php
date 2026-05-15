@@ -17,14 +17,14 @@
 
   <!-- Services nav -->
   <div class="mtc-sidebar-nav">
-    <h4>Our Services</h4>
+    <h3>Our Services</h3>
     <ul>
       <li><a href="/services/tires-wheels/">Tires &amp; Wheels</a></li>
       <li><a href="/services/tire-storage/">On-Site Tire Storage</a></li>
       <li><a href="/services/automotive-repairs-maintenance/">Auto Repairs</a></li>
       <li><a href="/services/wheel-alignment-oakville/">Wheel Alignment</a></li>
       <li><a href="/services/brake-inspection-repairs-oakville/">Brake Inspection</a></li>
-      <li><a href="/services/fleet-cards/">Provincial Safety Inspection</a></li>
+      <li><a href="/services/provincial-safety-inspection/">Provincial Safety Inspection</a></li>
     </ul>
   </div>
 
@@ -72,7 +72,7 @@
   border: 1px solid #222222;
   padding: 20px;
 }
-.mtc-sidebar-nav h4 {
+.mtc-sidebar-nav h3 {
   color: #888888;
   font-size: 0.75rem;
   letter-spacing: 2px;

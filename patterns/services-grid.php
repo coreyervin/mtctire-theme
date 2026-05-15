@@ -41,7 +41,7 @@
         <span class="mtc-service-row-desc">Complete brake system check and repair — don't wait</span>
         <span class="mtc-service-row-arrow">→</span>
       </a>
-      <a href="/services/fleet-cards/" class="mtc-service-row">
+      <a href="/services/provincial-safety-inspection/" class="mtc-service-row">
         <span class="mtc-service-row-name">Provincial Safety Inspection Centre</span>
         <span class="mtc-service-row-desc">Registered MTO inspection centre — Safety Standards Certificates issued here</span>
         <span class="mtc-service-row-arrow">→</span>
