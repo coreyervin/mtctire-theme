@@ -42,7 +42,7 @@
         <span class="mtc-service-row-arrow">→</span>
       </a>
       <a href="/services/fleet-cards/" class="mtc-service-row">
-        <span class="mtc-service-row-name">DriveON Inspections</span>
+        <span class="mtc-service-row-name">Provincial Safety Inspection Centre</span>
         <span class="mtc-service-row-desc">Registered MTO inspection centre — Safety Standards Certificates issued here</span>
         <span class="mtc-service-row-arrow">→</span>
       </a>

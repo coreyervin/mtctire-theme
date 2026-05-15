@@ -24,7 +24,7 @@
       <li><a href="/services/automotive-repairs-maintenance/">Auto Repairs</a></li>
       <li><a href="/services/wheel-alignment-oakville/">Wheel Alignment</a></li>
       <li><a href="/services/brake-inspection-repairs-oakville/">Brake Inspection</a></li>
-      <li><a href="/services/fleet-cards/">DriveON Inspections</a></li>
+      <li><a href="/services/fleet-cards/">Provincial Safety Inspection</a></li>
     </ul>
   </div>
 

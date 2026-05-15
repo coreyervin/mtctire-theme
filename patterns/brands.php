@@ -24,13 +24,13 @@ $brands = [
     <p class="section-eyebrow" style="text-align:center;justify-content:center;margin-bottom:32px">Brands We Carry</p>
     <div class="mtc-brands-grid">
       <?php foreach ( $brands as $brand ) : ?>
-      <div class="mtc-brand-card">
+      <a href="https://treadpro.ca/promotions/" class="mtc-brand-card" target="_blank" rel="noopener">
         <img
           src="<?php echo esc_url( $uploads . $brand['file'] ); ?>"
           alt="<?php echo esc_attr( $brand['alt'] ); ?>"
           loading="lazy"
         />
-      </div>
+      </a>
       <?php endforeach; ?>
     </div>
   </div>
