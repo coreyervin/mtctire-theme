@@ -155,6 +155,34 @@ add_action( 'init', function () {
     }
 } );
 //
+// Promo URL checker — called by JS on rebates page before navigating to a brand-specific link.
+// Does a server-side HEAD request (no CORS restrictions), caches result for 24 h with transients.
+// Only allows requests to treadpro.ca to prevent misuse as an open proxy.
+add_action( 'wp_ajax_nopriv_mtc_check_url', 'mtc_check_promo_url' );
+add_action( 'wp_ajax_mtc_check_url',        'mtc_check_promo_url' );
+function mtc_check_promo_url() {
+    $url = isset( $_GET['url'] ) ? esc_url_raw( $_GET['url'] ) : '';
+
+    if ( ! $url || strpos( $url, 'https://treadpro.ca/' ) !== 0 ) {
+        wp_send_json( [ 'ok' => false ] );
+    }
+
+    $cache_key = 'mtc_url_' . md5( $url );
+    $cached    = get_transient( $cache_key );
+
+    if ( $cached !== false ) {
+        wp_send_json( [ 'ok' => $cached === '1' ] );
+    }
+
+    $response = wp_remote_head( $url, [ 'timeout' => 5, 'redirection' => 3 ] );
+    $code     = wp_remote_retrieve_response_code( $response );
+    $ok       = ( $code >= 200 && $code < 400 );
+
+    set_transient( $cache_key, $ok ? '1' : '0', DAY_IN_SECONDS );
+
+    wp_send_json( [ 'ok' => $ok, 'code' => $code ] );
+}
+
 // Note on Google Fonts: Loading from external Google servers transmits visitor IPs to Google.
 // For stricter GDPR/PIPEDA compliance, self-host fonts instead: WordPress 6.5+ includes a
 // Font Library under Appearance → Editor → Styles → Typography. Alternatively, download the
