@@ -365,7 +365,8 @@ a:hover { color: #ffffff; }
   .site-header .wp-block-navigation {
     margin-left: auto;
   }
-  .site-header .wp-block-buttons {
+  .site-header .wp-block-buttons,
+  .site-header .wp-block-html {
     display: none;
   }
 
