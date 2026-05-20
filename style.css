@@ -38,9 +38,9 @@ body {
   box-sizing: border-box;
 }
 
-/* Phone button rendered as wp:html — keep it inline in the flex row */
-.site-header .wp-block-html {
-  display: flex !important;
+/* Phone button wrapper — keep it inline in the header flex row */
+.mtc-header-phone {
+  display: flex;
   align-items: center;
   flex-shrink: 0;
 }
@@ -373,7 +373,7 @@ a:hover { color: #ffffff; }
     margin-left: auto;
   }
   .site-header .wp-block-buttons,
-  .site-header .wp-block-html {
+  .mtc-header-phone {
     display: none !important;
   }
 
