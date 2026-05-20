@@ -38,6 +38,13 @@ body {
   box-sizing: border-box;
 }
 
+/* Phone button rendered as wp:html — keep it inline in the flex row */
+.site-header .wp-block-html {
+  display: flex !important;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .site-header .wp-block-navigation a {
   color: #cccccc;
   font-size: 0.65rem;
@@ -367,7 +374,7 @@ a:hover { color: #ffffff; }
   }
   .site-header .wp-block-buttons,
   .site-header .wp-block-html {
-    display: none;
+    display: none !important;
   }
 
   /* Hamburger button style */
