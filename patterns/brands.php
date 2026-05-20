@@ -21,7 +21,7 @@ $brands = [
 <!-- wp:html -->
 <section class="mtc-brands-section">
   <div class="mtc-brands-inner">
-    <p class="section-eyebrow" style="text-align:center;justify-content:center;margin-bottom:32px">Brands We Carry</p>
+    <p class="section-eyebrow" style="text-align:center;justify-content:center;margin-bottom:32px">We carry all brands, including</p>
     <div class="mtc-brands-grid">
       <?php foreach ( $brands as $brand ) : ?>
       <a href="https://treadpro.ca/promotions/" class="mtc-brand-card" target="_blank" rel="noopener">

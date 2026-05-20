@@ -20,8 +20,8 @@
       <span class="mtc-feature-desc">All makes and models, every tire size ordered fast.</span>
     </div>
     <div class="mtc-feature-card">
-      <span class="mtc-feature-title">Balancing &amp; Valves</span>
-      <span class="mtc-feature-desc">Every new set gets balanced and fitted with fresh valve stems.</span>
+      <span class="mtc-feature-title">Balancing &amp; Installation</span>
+      <span class="mtc-feature-desc">Every tire receives high speed balancing and all wheels are hand torqued.</span>
     </div>
     <div class="mtc-feature-card">
       <span class="mtc-feature-title">Custom Wheels</span>

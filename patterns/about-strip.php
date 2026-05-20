@@ -59,7 +59,7 @@
       <!-- /wp:column -->
       <!-- wp:column -->
       <div class="wp-block-column">
-        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--oswald)","fontSize":"1.8rem","fontWeight":"700"},"color":{"text":"#f3832e"}}} --><p style="font-family:var(--wp--preset--font-family--oswald);font-size:1.8rem;font-weight:700;color:#f3832e">4.6★</p><!-- /wp:paragraph -->
+        <!-- wp:paragraph {"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--oswald)","fontSize":"1.8rem","fontWeight":"700"},"color":{"text":"#f3832e"}}} --><p style="font-family:var(--wp--preset--font-family--oswald);font-size:1.8rem;font-weight:700;color:#f3832e">[mtc_rating]★</p><!-- /wp:paragraph -->
         <!-- wp:paragraph {"style":{"color":{"text":"#666666"},"typography":{"fontSize":"0.65rem","textTransform":"uppercase","letterSpacing":"1px"}}} --><p style="color:#666666;font-size:0.65rem;text-transform:uppercase;letter-spacing:1px">Google Rating</p><!-- /wp:paragraph -->
       </div>
       <!-- /wp:column -->

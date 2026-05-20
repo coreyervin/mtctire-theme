@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Service: DriveON Inspection Centre
+ * Title: Service: Safety Inspection
  * Slug: mtctire/service-fleet-cards
  * Categories: mtctire
  */

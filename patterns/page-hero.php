@@ -16,7 +16,7 @@
       $crumbs = '<a href="' . home_url( '/' ) . '" style="color:#555555;text-decoration:none">Home</a>';
       $ancestors = array_reverse( get_ancestors( get_the_ID(), 'page' ) );
       foreach ( $ancestors as $ancestor_id ) {
-          $crumbs .= ' <span style="color:#333333">›</span> <a href="' . get_permalink( $ancestor_id ) . '" style="color:#555555;text-decoration:none">' . get_the_title( $ancestor_id ) . '</a>';
+          $crumbs .= ' <span style="color:#333333">›</span> <a href="' . esc_url( get_permalink( $ancestor_id ) ) . '" style="color:#555555;text-decoration:none">' . esc_html( get_the_title( $ancestor_id ) ) . '</a>';
       }
       echo '<p style="color:#555555;font-size:0.62rem;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">' . $crumbs . '</p>';
       ?>

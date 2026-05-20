@@ -10,7 +10,7 @@
   <div class="mtc-trust-bar-inner">
     <div class="mtc-trust-item">
       <span class="mtc-trust-icon">★</span>
-      <span class="mtc-trust-label"><strong>4.6</strong> Google Rating</span>
+      <span class="mtc-trust-label"><strong>[mtc_rating]</strong> Google Rating</span>
     </div>
     <span class="mtc-trust-divider"></span>
     <div class="mtc-trust-item">
@@ -85,14 +85,22 @@
   /* Items sit at positions 1,3,5,7 (dividers fill 2,4,6) */
   .mtc-trust-item {
     padding: 16px 12px;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
+    gap: 6px;
     border-right: 1px solid #222222;
     border-bottom: 1px solid #222222;
   }
-  /* Right column (Same-Day=3, Price Match=7) — no right border */
+  .mtc-trust-label {
+    white-space: normal;
+    text-align: center;
+  }
+  /* Items at positions 1,3,5,7 (dividers at 2,4,6 are hidden on mobile) */
+  /* Right column (Certified Technicians=3, Family Owned=7) — no right border */
   .mtc-trust-item:nth-child(3),
   .mtc-trust-item:nth-child(7) { border-right: none; }
-  /* Bottom row (Certified=5, Price Match=7) — no bottom border */
+  /* Bottom row (Nokian Tyres=5, Family Owned=7) — no bottom border */
   .mtc-trust-item:nth-child(5),
   .mtc-trust-item:nth-child(7) { border-bottom: none; }
 }

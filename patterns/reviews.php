@@ -10,7 +10,7 @@
   <div class="mtc-reviews-inner">
     <p class="section-eyebrow" style="margin-bottom:12px">What Customers Say</p>
     <h2 class="mtc-reviews-heading">Real Reviews From Real Customers</h2>
-    <?php echo do_shortcode('[trustindex no-registration=google]'); ?>
+    [trustindex no-registration=google]
   </div>
 </section>
 <style>

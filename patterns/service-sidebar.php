@@ -25,6 +25,7 @@
       <li><a href="/services/wheel-alignment-oakville/">Wheel Alignment</a></li>
       <li><a href="/services/brake-inspection-repairs-oakville/">Brake Inspection</a></li>
       <li><a href="/services/provincial-safety-inspection/">Provincial Safety Inspection</a></li>
+      <li><a href="/services/manufacturer-rebates/">Manufacturer Rebates</a></li>
     </ul>
   </div>
 

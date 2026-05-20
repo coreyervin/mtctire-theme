@@ -29,18 +29,22 @@ add_action( 'wp_enqueue_scripts', function () {
     );
 } );
 
+// Returns true if today falls within the summer Saturday closure window
+// (Saturday of Victoria Day weekend through Labour Day).
+function mtc_is_summer_sat_closed() {
+    $year      = (int) date( 'Y' );
+    $may25     = new DateTime( "$year-05-25" );
+    $vd        = $may25->format( 'N' ) === '1' ? $may25 : (clone $may25)->modify( 'last monday' );
+    $vd_sat    = (clone $vd)->modify( '-2 days' );
+    $labour    = new DateTime( "first monday of September $year" );
+    $today     = new DateTime();
+    $today->setTime( 0, 0, 0 );
+    return ( $today >= $vd_sat && $today <= $labour );
+}
+
 // LocalBusiness JSON-LD schema — injected into <head> sitewide
 add_action( 'wp_head', function () {
-    $year = (int) date( 'Y' );
-
-    // Victoria Day: last Monday on or before May 25
-    $may25 = new DateTime( "$year-05-25" );
-    $victoria_day = $may25->format( 'N' ) === '1' ? $may25 : (clone $may25)->modify( 'last monday' );
-    $vd_sat = (clone $victoria_day)->modify( '-2 days' );
-    $labour_day = new DateTime( "first monday of September $year" );
-    $today = new DateTime();
-    $today->setTime( 0, 0, 0 );
-    $sat_closed = ( $today >= $vd_sat && $today <= $labour_day );
+    $sat_closed = mtc_is_summer_sat_closed();
 
     $hours = [
         [ 'dayOfWeek' => [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ], 'opens' => '08:00', 'closes' => '17:30' ],
@@ -75,9 +79,9 @@ add_action( 'wp_head', function () {
         'openingHoursSpecification' => $hours,
         'aggregateRating' => [
             '@type'       => 'AggregateRating',
-            'ratingValue' => '4.6',
+            'ratingValue' => get_option( 'mtc_rating_value', '4.6' ),
             'bestRating'  => '5',
-            'ratingCount' => '200',
+            'ratingCount' => get_option( 'mtc_rating_count', '200' ),
         ],
         'priceRange'  => '$$',
         'currenciesAccepted' => 'CAD',
@@ -88,57 +92,124 @@ add_action( 'wp_head', function () {
     echo '<script type="application/ld+json">' . wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT ) . '</script>' . "\n";
 }, 5 );
 
+// Process shortcodes inside Custom HTML (wp:html) blocks.
+// Needed because WordPress doesn't run do_shortcode on core/html blocks by default.
+add_filter( 'render_block_core/html', 'do_shortcode' );
+
+// Google rating shortcode — [mtc_rating]
+// Returns the rating value from Settings → Business Hours.
+add_shortcode( 'mtc_rating', function () {
+    return esc_html( get_option( 'mtc_rating_value', '4.6' ) );
+} );
+
 // Dynamic copyright year shortcode — [mtc_copyright]
 add_shortcode( 'mtc_copyright', function () {
     return '<p class="has-text-color" style="color:#333333;font-size:0.65rem;margin:0">&copy; 2005&ndash;' . date( 'Y' ) . ' MTC Tire Oakville Inc. All rights reserved.</p>';
 } );
 
 // Dynamic hours shortcode — [mtc_hours]
+// Core open/close times are editable via Settings → Business Hours.
+// The summer Saturday closure window remains calculated dynamically.
 add_shortcode( 'mtc_hours', function () {
-    $year = (int) date( 'Y' );
+    $wkday_open  = get_option( 'mtc_hours_weekday_open',  '8:00am' );
+    $wkday_close = get_option( 'mtc_hours_weekday_close', '5:30pm' );
+    $sat_open    = get_option( 'mtc_hours_sat_open',      '9:00am' );
+    $sat_close   = get_option( 'mtc_hours_sat_close',     '2:00pm' );
 
-    // Victoria Day: last Monday on or before May 25
-    $may25 = new DateTime( "$year-05-25" );
-    if ( $may25->format( 'N' ) === '1' ) {
-        $victoria_day = $may25;
-    } else {
-        $victoria_day = clone $may25;
-        $victoria_day->modify( 'last monday' );
-    }
-    $vd_sat = clone $victoria_day;
-    $vd_sat->modify( '-2 days' ); // Saturday of Victoria Day weekend
-
-    // Labour Day: first Monday of September
-    $labour_day = new DateTime( "first monday of September $year" );
-
-    $today = new DateTime();
-    $today->setTime( 0, 0, 0 );
-
-    $closed_saturdays = ( $today >= $vd_sat && $today <= $labour_day );
+    $closed_saturdays = mtc_is_summer_sat_closed();
 
     $sat_line = $closed_saturdays
         ? 'Sat: Closed'
-        : 'Sat: 9:00am – 2:00pm';
+        : 'Sat: ' . esc_html( $sat_open ) . ' – ' . esc_html( $sat_close );
 
     return '<p style="color:#aaaaaa;font-size:0.8rem;line-height:1.9;margin:0">'
-        . 'Mon–Fri: 8:00am – 5:30pm<br>'
+        . 'Mon–Fri: ' . esc_html( $wkday_open ) . ' – ' . esc_html( $wkday_close ) . '<br>'
         . esc_html( $sat_line ) . '<br>'
         . '<span style="color:#555555;font-size:0.72rem">(Closed Saturdays: Victoria Day weekend through Labour Day weekend)</span><br>'
         . 'Sun: Closed'
         . '</p>';
 } );
 
+// Business Hours settings page — Settings → Business Hours
+add_action( 'admin_menu', function () {
+    add_options_page(
+        'Business Hours',
+        'Business Hours',
+        'manage_options',
+        'mtc-business-hours',
+        'mtc_business_hours_page'
+    );
+} );
+
+add_action( 'admin_init', function () {
+    $fields = [
+        'mtc_hours_weekday_open'  => 'Mon–Fri Open',
+        'mtc_hours_weekday_close' => 'Mon–Fri Close',
+        'mtc_hours_sat_open'      => 'Saturday Open',
+        'mtc_hours_sat_close'     => 'Saturday Close',
+        'mtc_rating_value'        => 'Google Rating',
+        'mtc_rating_count'        => 'Number of Reviews',
+    ];
+    foreach ( $fields as $key => $label ) {
+        register_setting( 'mtc_business_hours', $key, [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    }
+} );
+
+function mtc_business_hours_page() {
+    ?>
+    <div class="wrap">
+        <h1>Business Hours</h1>
+        <p style="color:#666">These hours appear on the Contact page and in the footer. The summer Saturday closure (Victoria Day weekend through Labour Day weekend) is still applied automatically.</p>
+        <form method="post" action="options.php">
+            <?php settings_fields( 'mtc_business_hours' ); ?>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row"><label for="mtc_hours_weekday_open">Mon–Fri Open</label></th>
+                    <td><input type="text" id="mtc_hours_weekday_open" name="mtc_hours_weekday_open" value="<?php echo esc_attr( get_option( 'mtc_hours_weekday_open', '8:00am' ) ); ?>" class="regular-text" placeholder="8:00am" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_hours_weekday_close">Mon–Fri Close</label></th>
+                    <td><input type="text" id="mtc_hours_weekday_close" name="mtc_hours_weekday_close" value="<?php echo esc_attr( get_option( 'mtc_hours_weekday_close', '5:30pm' ) ); ?>" class="regular-text" placeholder="5:30pm" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_hours_sat_open">Saturday Open</label></th>
+                    <td><input type="text" id="mtc_hours_sat_open" name="mtc_hours_sat_open" value="<?php echo esc_attr( get_option( 'mtc_hours_sat_open', '9:00am' ) ); ?>" class="regular-text" placeholder="9:00am" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_hours_sat_close">Saturday Close</label></th>
+                    <td><input type="text" id="mtc_hours_sat_close" name="mtc_hours_sat_close" value="<?php echo esc_attr( get_option( 'mtc_hours_sat_close', '2:00pm' ) ); ?>" class="regular-text" placeholder="2:00pm" /></td>
+                </tr>
+            </table>
+            <h2 class="title">Google Rating</h2>
+            <p style="color:#666">Used in the structured data (schema.org) injected into every page. Update when your Google rating or review count changes.</p>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row"><label for="mtc_rating_value">Google Rating</label></th>
+                    <td><input type="text" id="mtc_rating_value" name="mtc_rating_value" value="<?php echo esc_attr( get_option( 'mtc_rating_value', '4.6' ) ); ?>" class="small-text" placeholder="4.6" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_rating_count">Number of Reviews</label></th>
+                    <td><input type="text" id="mtc_rating_count" name="mtc_rating_count" value="<?php echo esc_attr( get_option( 'mtc_rating_count', '200' ) ); ?>" class="small-text" placeholder="200" /></td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
+}
+
 // Register pattern category and service content patterns for the block inserter
 add_action( 'init', function () {
     register_block_pattern_category( 'mtctire', [ 'label' => 'MTC Tire' ] );
 
     $service_patterns = [
-        'service-tires-wheels'      => [ 'title' => 'Service: Tires & Wheels',      'file' => 'service-tires-wheels' ],
-        'service-tire-storage'      => [ 'title' => 'Service: Tire Storage',         'file' => 'service-tire-storage' ],
-        'service-automotive-repair' => [ 'title' => 'Service: Automotive Repair',    'file' => 'service-automotive-repair' ],
-        'service-wheel-alignment'   => [ 'title' => 'Service: Wheel Alignment',      'file' => 'service-wheel-alignment' ],
-        'service-brake-inspection'  => [ 'title' => 'Service: Brake Inspection',     'file' => 'service-brake-inspection' ],
-        'service-fleet-cards'       => [ 'title' => 'Service: Fleet Cards',          'file' => 'service-fleet-cards' ],
+        'service-tires-wheels'      => [ 'title' => 'Service: Tires & Wheels',         'file' => 'service-tires-wheels' ],
+        'service-tire-storage'      => [ 'title' => 'Service: Tire Storage',            'file' => 'service-tire-storage' ],
+        'service-automotive-repair' => [ 'title' => 'Service: Automotive Repair',       'file' => 'service-automotive-repair' ],
+        'service-wheel-alignment'   => [ 'title' => 'Service: Wheel Alignment',         'file' => 'service-wheel-alignment' ],
+        'service-brake-inspection'  => [ 'title' => 'Service: Brake Inspection',        'file' => 'service-brake-inspection' ],
+        'service-fleet-cards'       => [ 'title' => 'Service: Safety Inspection',       'file' => 'service-fleet-cards' ],
+        'about-content'             => [ 'title' => 'Page: About Content',              'file' => 'about-content' ],
     ];
 
     foreach ( $service_patterns as $slug => $pattern ) {
@@ -182,6 +253,222 @@ function mtc_check_promo_url() {
 
     wp_send_json( [ 'ok' => $ok, 'code' => $code ] );
 }
+
+// =========================================================
+// Synced Pattern Seeder
+// Runs once on init — creates wp_block posts for all front-page
+// sections by rendering the PHP pattern files via output buffering.
+// IDs are stored in wp_options so the template filter can reference them.
+// To re-seed (e.g. after a fresh DB): delete the 'mtc_synced_patterns_v1'
+// option via WP CLI: wp option delete mtc_synced_patterns_v1
+// =========================================================
+
+function mtc_get_pattern_html( $file ) {
+    ob_start();
+    include get_template_directory() . '/patterns/' . $file . '.php';
+    return trim( ob_get_clean() );
+}
+
+function mtc_seed_synced_patterns() {
+    if ( get_option( 'mtc_synced_patterns_v2' ) ) return;
+
+    $patterns = [
+        'mtc-front-hero'          => [ 'title' => 'MTC: Hero',            'file' => 'hero' ],
+        'mtc-front-trust-bar'     => [ 'title' => 'MTC: Trust Bar',       'file' => 'trust-bar' ],
+        'mtc-front-services-grid' => [ 'title' => 'MTC: Services Grid',   'file' => 'services-grid' ],
+        'mtc-front-about-strip'   => [ 'title' => 'MTC: About Strip',     'file' => 'about-strip' ],
+        'mtc-front-brands'        => [ 'title' => 'MTC: Brands',          'file' => 'brands' ],
+        'mtc-front-reviews'       => [ 'title' => 'MTC: Reviews',         'file' => 'reviews' ],
+        'mtc-front-cta-banner'    => [ 'title' => 'MTC: CTA Banner',      'file' => 'cta-banner' ],
+        'mtc-service-sidebar'     => [ 'title' => 'MTC: Service Sidebar', 'file' => 'service-sidebar' ],
+    ];
+
+    $ids = (array) get_option( 'mtc_synced_pattern_ids', [] );
+
+    foreach ( $patterns as $slug => $data ) {
+        // Reuse existing wp_block post if it was already created
+        $existing = get_page_by_path( $slug, OBJECT, 'wp_block' );
+        if ( $existing ) {
+            $ids[ $slug ] = $existing->ID;
+            continue;
+        }
+
+        $content = mtc_get_pattern_html( $data['file'] );
+        $id = wp_insert_post( [
+            'post_title'   => $data['title'],
+            'post_name'    => $slug,
+            'post_content' => $content,
+            'post_status'  => 'publish',
+            'post_type'    => 'wp_block',
+        ] );
+
+        if ( ! is_wp_error( $id ) ) {
+            $ids[ $slug ] = $id;
+        }
+    }
+
+    update_option( 'mtc_synced_pattern_ids', $ids );
+    update_option( 'mtc_synced_patterns_v2', true );
+}
+add_action( 'init', 'mtc_seed_synced_patterns', 20 );
+
+// Inject synced block references into theme templates at runtime.
+// For the front-page, replaces the whole content with wp:block refs.
+// For all other theme templates, does a targeted string replace of known
+// pattern slugs (cta-banner, service-sidebar) with their synced refs.
+// Once a client customises any template via the Site Editor, WordPress
+// stores a DB copy (source: 'custom') and this filter no longer applies to it.
+add_filter( 'get_block_templates', function ( $templates, $query, $template_type ) {
+    if ( $template_type !== 'wp_template' ) return $templates;
+
+    $ids = get_option( 'mtc_synced_pattern_ids', [] );
+    if ( empty( $ids ) ) return $templates;
+
+    // Map PHP pattern slugs → synced pattern ID keys
+    $replacements = array_filter( [
+        'mtctire/cta-banner'      => ! empty( $ids['mtc-front-cta-banner'] )  ? (int) $ids['mtc-front-cta-banner']  : null,
+        'mtctire/service-sidebar' => ! empty( $ids['mtc-service-sidebar'] )   ? (int) $ids['mtc-service-sidebar']   : null,
+    ] );
+
+    foreach ( $templates as &$template ) {
+        if ( $template->source !== 'theme' ) continue;
+
+        // front-page now renders wp:post-content — skip it entirely
+        if ( $template->slug === 'front-page' ) continue;
+
+        // Replace remaining PHP pattern refs with synced wp:block refs
+        $content = $template->content;
+        foreach ( $replacements as $pattern_slug => $ref_id ) {
+            $content = str_replace(
+                '<!-- wp:pattern {"slug":"' . $pattern_slug . '"} /-->',
+                '<!-- wp:block {"ref":' . $ref_id . '} /-->',
+                $content
+            );
+        }
+        $template->content = $content;
+    }
+    return $templates;
+}, 10, 3 );
+
+// Home page content seeder — runs once after the synced pattern seeder.
+// Concatenates the current synced pattern HTML into the static front page's
+// post_content so it's editable directly in the WordPress Page Editor.
+// To re-seed: wp option delete mtc_home_page_seeded_v1
+function mtc_seed_home_page() {
+    if ( get_option( 'mtc_home_page_seeded_v1' ) ) return;
+
+    $home_id = (int) get_option( 'page_on_front' );
+    if ( ! $home_id ) return;
+
+    $ids = get_option( 'mtc_synced_pattern_ids', [] );
+    if ( empty( $ids ) ) return;
+
+    $order = [
+        'mtc-front-hero',
+        'mtc-front-trust-bar',
+        'mtc-front-services-grid',
+        'mtc-front-about-strip',
+        'mtc-front-brands',
+        'mtc-front-reviews',
+        'mtc-front-cta-banner',
+    ];
+
+    $content = '';
+    foreach ( $order as $key ) {
+        if ( empty( $ids[ $key ] ) ) continue;
+        $pattern = get_post( (int) $ids[ $key ] );
+        if ( $pattern ) {
+            $content .= "\n" . $pattern->post_content;
+        }
+    }
+
+    // Write directly to avoid wp_kses_post() stripping <style> tags from block content
+    global $wpdb;
+    $wpdb->update(
+        $wpdb->posts,
+        [
+            'post_content'      => trim( $content ),
+            'post_modified'     => current_time( 'mysql' ),
+            'post_modified_gmt' => current_time( 'mysql', 1 ),
+        ],
+        [ 'ID' => $home_id ]
+    );
+    clean_post_cache( $home_id );
+
+    update_option( 'mtc_home_page_seeded_v1', true );
+}
+add_action( 'init', 'mtc_seed_home_page', 25 );
+
+// Contact page content seeder — moves the hardcoded template layout into post_content
+// so the contact page is editable directly in the WordPress Page Editor.
+// To re-seed: wp option delete mtc_contact_page_seeded_v1
+function mtc_seed_contact_page() {
+    if ( get_option( 'mtc_contact_page_seeded_v1' ) ) return;
+
+    $contact = get_page_by_path( 'contact', OBJECT, 'page' );
+    if ( ! $contact ) return;
+
+    $content = '<!-- wp:columns {"style":{"spacing":{"blockGap":{"left":"2px"}}},"layout":{"type":"default"}} -->
+<div class="wp-block-columns mtc-page-columns" style="gap:0;display:flex;flex-wrap:wrap">
+  <!-- wp:column {"width":"55%","style":{"color":{"background":"#111111"},"spacing":{"padding":{"top":"48px","bottom":"48px","left":"48px","right":"40px"}}}} -->
+  <div class="wp-block-column" style="background-color:#111111;padding-top:48px;padding-bottom:48px;padding-left:48px;padding-right:40px;flex:0 0 55%;max-width:55%">
+    <!-- wp:heading {"level":1,"style":{"typography":{"fontSize":"1.5rem"},"spacing":{"margin":{"bottom":"6px"}}}} --><h1>Let Us Contact You</h1><!-- /wp:heading -->
+    <!-- wp:paragraph {"style":{"color":{"text":"#666666"},"typography":{"fontSize":"0.75rem"},"spacing":{"margin":{"bottom":"28px"}}}} --><p style="color:#666666;font-size:0.75rem">Fill in your vehicle details and what you\'re looking for — someone from the MTC Tire team will get back to you shortly.</p><!-- /wp:paragraph -->
+    <!-- wp:shortcode -->
+    [wpforms id="1140"]
+    <!-- /wp:shortcode -->
+  </div>
+  <!-- /wp:column -->
+  <!-- wp:column {"width":"45%","style":{"color":{"background":"#0d0d0d"},"spacing":{"padding":{"top":"48px","bottom":"48px","left":"40px","right":"48px"}}}} -->
+  <div class="wp-block-column" style="background-color:#0d0d0d;padding-top:48px;padding-bottom:48px;padding-left:40px;padding-right:48px;flex:0 0 45%;max-width:45%">
+    <!-- wp:heading {"level":2,"style":{"typography":{"fontSize":"1.3rem"},"spacing":{"margin":{"bottom":"24px"}}}} --><h2>Find Us</h2><!-- /wp:heading -->
+    <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"},"padding":{"bottom":"20px"}},"border":{"bottom":{"color":"#1e1e1e","style":"solid","width":"1px"}}}} -->
+    <div class="wp-block-group">
+      <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Address</p><!-- /wp:paragraph -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="https://maps.google.com/?q=1439+Speers+Rd,+Oakville+ON+L6L+2X5" target="_blank" rel="noopener" style="color:#aaaaaa;text-decoration:none">1439 Speers Rd<br>Oakville, ON L6L 2X5</a></p><!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:group -->
+    <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"},"padding":{"bottom":"20px"}},"border":{"bottom":{"color":"#1e1e1e","style":"solid","width":"1px"}}}} -->
+    <div class="wp-block-group">
+      <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Phone</p><!-- /wp:paragraph -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="tel:9058476665" style="color:#aaaaaa;text-decoration:none">905.847.6665</a></p><!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:group -->
+    <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"},"padding":{"bottom":"20px"}},"border":{"bottom":{"color":"#1e1e1e","style":"solid","width":"1px"}}}} -->
+    <div class="wp-block-group">
+      <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Email</p><!-- /wp:paragraph -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="mailto:tiresales@mtctire.ca" style="color:#aaaaaa;text-decoration:none">tiresales@mtctire.ca</a></p><!-- /wp:paragraph -->
+    </div>
+    <!-- /wp:group -->
+    <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"}}}} -->
+    <div class="wp-block-group">
+      <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Hours</p><!-- /wp:paragraph -->
+      <!-- wp:shortcode -->[mtc_hours]<!-- /wp:shortcode -->
+    </div>
+    <!-- /wp:group -->
+    <!-- wp:html -->
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2897.863653509784!2d-79.71764138830888!3d43.421675370993604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b5dc0f57b7fa7%3A0x5bf33780d6b05da4!2sMTC%20Tire%20Oakville%20Inc.!5e0!3m2!1sen!2sca!4v1776732824177!5m2!1sen!2sca" width="100%" height="240" style="border:0;filter:grayscale(100%) invert(90%) contrast(90%)" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <!-- /wp:html -->
+  </div>
+  <!-- /wp:column -->
+</div>
+<!-- /wp:columns -->';
+
+    global $wpdb;
+    $wpdb->update(
+        $wpdb->posts,
+        [
+            'post_content'      => $content,
+            'post_modified'     => current_time( 'mysql' ),
+            'post_modified_gmt' => current_time( 'mysql', 1 ),
+        ],
+        [ 'ID' => $contact->ID ]
+    );
+    clean_post_cache( $contact->ID );
+
+    update_option( 'mtc_contact_page_seeded_v1', true );
+}
+add_action( 'init', 'mtc_seed_contact_page', 26 );
 
 // Note on Google Fonts: Loading from external Google servers transmits visitor IPs to Google.
 // For stricter GDPR/PIPEDA compliance, self-host fonts instead: WordPress 6.5+ includes a
