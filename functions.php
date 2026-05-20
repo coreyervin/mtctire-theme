@@ -42,16 +42,36 @@ function mtc_is_summer_sat_closed() {
     return ( $today >= $vd_sat && $today <= $labour );
 }
 
+// Returns true if Saturdays are closed — either by manual toggle or summer window.
+function mtc_is_saturday_closed() {
+    return (bool) get_option( 'mtc_saturday_force_closed' ) || mtc_is_summer_sat_closed();
+}
+
 // LocalBusiness JSON-LD schema — injected into <head> sitewide
 add_action( 'wp_head', function () {
-    $sat_closed = mtc_is_summer_sat_closed();
+    $sat_closed = mtc_is_saturday_closed();
+
+    $sat_open  = get_option( 'mtc_hours_sat_open',  '9:00am' );
+    $sat_close = get_option( 'mtc_hours_sat_close', '2:00pm' );
+
+    // Convert stored 12h times to HH:MM for schema.org (e.g. "9:00am" → "09:00")
+    $to_schema_time = function( $t ) {
+        $dt = DateTime::createFromFormat( 'g:ia', strtolower( str_replace( ' ', '', $t ) ) );
+        return $dt ? $dt->format( 'H:i' ) : $t;
+    };
 
     $hours = [
-        [ 'dayOfWeek' => [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ], 'opens' => '08:00', 'closes' => '17:30' ],
+        [ 'dayOfWeek' => [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ],
+          'opens'     => $to_schema_time( get_option( 'mtc_hours_weekday_open',  '8:00am' ) ),
+          'closes'    => $to_schema_time( get_option( 'mtc_hours_weekday_close', '5:30pm' ) ) ],
     ];
     if ( ! $sat_closed ) {
-        $hours[] = [ 'dayOfWeek' => [ 'Saturday' ], 'opens' => '09:00', 'closes' => '14:00' ];
+        $hours[] = [ 'dayOfWeek' => [ 'Saturday' ],
+                     'opens'     => $to_schema_time( $sat_open ),
+                     'closes'    => $to_schema_time( $sat_close ) ];
     }
+
+    $phone = '+1' . preg_replace( '/[^0-9]/', '', get_option( 'mtc_phone', '905.847.6665' ) );
 
     $schema = [
         '@context'    => 'https://schema.org',
@@ -59,16 +79,16 @@ add_action( 'wp_head', function () {
         'name'        => 'MTC Tire Oakville Inc.',
         'image'       => 'https://mtctire.ca/wp-content/uploads/2017/05/mtctire-logo.png',
         'url'         => 'https://mtctire.ca',
-        'telephone'   => '+19058476665',
-        'email'       => 'tiresales@mtctire.ca',
+        'telephone'   => $phone,
+        'email'       => get_option( 'mtc_email', 'tiresales@mtctire.ca' ),
         'foundingDate'=> '2005',
         'description' => 'Family-owned tire and automotive repair shop in Oakville, Ontario, serving the community since 2005.',
         'address'     => [
             '@type'           => 'PostalAddress',
-            'streetAddress'   => '1439 Speers Rd',
-            'addressLocality' => 'Oakville',
-            'addressRegion'   => 'ON',
-            'postalCode'      => 'L6L 2X5',
+            'streetAddress'   => get_option( 'mtc_street_address', '1439 Speers Rd' ),
+            'addressLocality' => get_option( 'mtc_city',           'Oakville' ),
+            'addressRegion'   => get_option( 'mtc_province',       'ON' ),
+            'postalCode'      => get_option( 'mtc_postal_code',    'L6L 2X5' ),
             'addressCountry'  => 'CA',
         ],
         'geo' => [
@@ -96,8 +116,27 @@ add_action( 'wp_head', function () {
 // Needed because WordPress doesn't run do_shortcode on core/html blocks by default.
 add_filter( 'render_block_core/html', 'do_shortcode' );
 
+// Business info shortcodes — values editable via Settings → Business Info
+add_shortcode( 'mtc_phone', function () {
+    return esc_html( get_option( 'mtc_phone', '905.847.6665' ) );
+} );
+add_shortcode( 'mtc_phone_url', function () {
+    // Strips non-digits for use in tel: href attributes
+    return esc_attr( preg_replace( '/[^0-9]/', '', get_option( 'mtc_phone', '9058476665' ) ) );
+} );
+add_shortcode( 'mtc_email', function () {
+    return esc_html( get_option( 'mtc_email', 'tiresales@mtctire.ca' ) );
+} );
+add_shortcode( 'mtc_address', function () {
+    $street = get_option( 'mtc_street_address', '1439 Speers Rd' );
+    $city   = get_option( 'mtc_city',           'Oakville' );
+    $prov   = get_option( 'mtc_province',        'ON' );
+    $postal = get_option( 'mtc_postal_code',     'L6L 2X5' );
+    return esc_html( "$street, $city $prov $postal" );
+} );
+
 // Google rating shortcode — [mtc_rating]
-// Returns the rating value from Settings → Business Hours.
+// Returns the rating value from Settings → Google Reviews.
 add_shortcode( 'mtc_rating', function () {
     return esc_html( get_option( 'mtc_rating_value', '4.6' ) );
 } );
@@ -116,50 +155,106 @@ add_shortcode( 'mtc_hours', function () {
     $sat_open    = get_option( 'mtc_hours_sat_open',      '9:00am' );
     $sat_close   = get_option( 'mtc_hours_sat_close',     '2:00pm' );
 
-    $closed_saturdays = mtc_is_summer_sat_closed();
+    $closed_saturdays = mtc_is_saturday_closed();
 
     $sat_line = $closed_saturdays
         ? 'Sat: Closed'
         : 'Sat: ' . esc_html( $sat_open ) . ' – ' . esc_html( $sat_close );
 
+    $sat_note = get_option( 'mtc_saturday_force_closed' )
+        ? '(Saturdays currently closed)'
+        : '(Closed Saturdays: Victoria Day weekend through Labour Day weekend)';
+
     return '<p style="color:#aaaaaa;font-size:0.8rem;line-height:1.9;margin:0">'
         . 'Mon–Fri: ' . esc_html( $wkday_open ) . ' – ' . esc_html( $wkday_close ) . '<br>'
         . esc_html( $sat_line ) . '<br>'
-        . '<span style="color:#555555;font-size:0.72rem">(Closed Saturdays: Victoria Day weekend through Labour Day weekend)</span><br>'
+        . '<span style="color:#555555;font-size:0.72rem">' . esc_html( $sat_note ) . '</span><br>'
         . 'Sun: Closed'
         . '</p>';
 } );
 
-// Business Hours settings page — Settings → Business Hours
+// Settings pages — Business Info, Business Hours, Google Reviews
 add_action( 'admin_menu', function () {
-    add_options_page(
-        'Business Hours',
-        'Business Hours',
-        'manage_options',
-        'mtc-business-hours',
-        'mtc_business_hours_page'
-    );
+    add_options_page( 'Business Info',   'Business Info',   'manage_options', 'mtc-business-info',  'mtc_business_info_page' );
+    add_options_page( 'Business Hours',  'Business Hours',  'manage_options', 'mtc-business-hours', 'mtc_business_hours_page' );
+    add_options_page( 'Google Reviews',  'Google Reviews',  'manage_options', 'mtc-google-reviews',  'mtc_google_reviews_page' );
 } );
 
 add_action( 'admin_init', function () {
-    $fields = [
+    foreach ( [
+        'mtc_phone'          => 'Phone',
+        'mtc_email'          => 'Email',
+        'mtc_street_address' => 'Street Address',
+        'mtc_city'           => 'City',
+        'mtc_province'       => 'Province',
+        'mtc_postal_code'    => 'Postal Code',
+    ] as $key => $label ) {
+        register_setting( 'mtc_business_info', $key, [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    }
+    register_setting( 'mtc_business_hours', 'mtc_saturday_force_closed', [ 'sanitize_callback' => 'absint' ] );
+    foreach ( [
         'mtc_hours_weekday_open'  => 'Mon–Fri Open',
         'mtc_hours_weekday_close' => 'Mon–Fri Close',
         'mtc_hours_sat_open'      => 'Saturday Open',
         'mtc_hours_sat_close'     => 'Saturday Close',
-        'mtc_rating_value'        => 'Google Rating',
-        'mtc_rating_count'        => 'Number of Reviews',
-    ];
-    foreach ( $fields as $key => $label ) {
+    ] as $key => $label ) {
         register_setting( 'mtc_business_hours', $key, [ 'sanitize_callback' => 'sanitize_text_field' ] );
     }
+    foreach ( [
+        'mtc_rating_value' => 'Google Rating',
+        'mtc_rating_count' => 'Number of Reviews',
+    ] as $key => $label ) {
+        register_setting( 'mtc_google_reviews', $key, [ 'sanitize_callback' => 'sanitize_text_field' ] );
+    }
 } );
+
+function mtc_business_info_page() {
+    ?>
+    <div class="wrap">
+        <h1>Business Info</h1>
+        <p style="color:#666">These values are used throughout the site — in the header, footer, contact page, service sidebar, and structured data. Update once and it changes everywhere.</p>
+        <form method="post" action="options.php">
+            <?php settings_fields( 'mtc_business_info' ); ?>
+            <table class="form-table" role="presentation">
+                <tr>
+                    <th scope="row"><label for="mtc_phone">Phone</label></th>
+                    <td>
+                        <input type="text" id="mtc_phone" name="mtc_phone" value="<?php echo esc_attr( get_option( 'mtc_phone', '905.847.6665' ) ); ?>" class="regular-text" placeholder="905.847.6665" />
+                        <p class="description">Display format (e.g. 905.847.6665). Digits are stripped automatically for click-to-call links.</p>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_email">Email</label></th>
+                    <td><input type="text" id="mtc_email" name="mtc_email" value="<?php echo esc_attr( get_option( 'mtc_email', 'tiresales@mtctire.ca' ) ); ?>" class="regular-text" placeholder="tiresales@mtctire.ca" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_street_address">Street Address</label></th>
+                    <td><input type="text" id="mtc_street_address" name="mtc_street_address" value="<?php echo esc_attr( get_option( 'mtc_street_address', '1439 Speers Rd' ) ); ?>" class="regular-text" placeholder="1439 Speers Rd" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_city">City</label></th>
+                    <td><input type="text" id="mtc_city" name="mtc_city" value="<?php echo esc_attr( get_option( 'mtc_city', 'Oakville' ) ); ?>" class="regular-text" placeholder="Oakville" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_province">Province</label></th>
+                    <td><input type="text" id="mtc_province" name="mtc_province" value="<?php echo esc_attr( get_option( 'mtc_province', 'ON' ) ); ?>" class="small-text" placeholder="ON" /></td>
+                </tr>
+                <tr>
+                    <th scope="row"><label for="mtc_postal_code">Postal Code</label></th>
+                    <td><input type="text" id="mtc_postal_code" name="mtc_postal_code" value="<?php echo esc_attr( get_option( 'mtc_postal_code', 'L6L 2X5' ) ); ?>" class="small-text" placeholder="L6L 2X5" /></td>
+                </tr>
+            </table>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
+}
 
 function mtc_business_hours_page() {
     ?>
     <div class="wrap">
         <h1>Business Hours</h1>
-        <p style="color:#666">These hours appear on the Contact page and in the footer. The summer Saturday closure (Victoria Day weekend through Labour Day weekend) is still applied automatically.</p>
+        <p style="color:#666">These hours appear on the Contact page and service sidebar. The summer Saturday closure (Victoria Day weekend through Labour Day weekend) is applied automatically — or you can force Saturdays closed year-round with the toggle below.</p>
         <form method="post" action="options.php">
             <?php settings_fields( 'mtc_business_hours' ); ?>
             <table class="form-table" role="presentation">
@@ -179,9 +274,30 @@ function mtc_business_hours_page() {
                     <th scope="row"><label for="mtc_hours_sat_close">Saturday Close</label></th>
                     <td><input type="text" id="mtc_hours_sat_close" name="mtc_hours_sat_close" value="<?php echo esc_attr( get_option( 'mtc_hours_sat_close', '2:00pm' ) ); ?>" class="regular-text" placeholder="2:00pm" /></td>
                 </tr>
+                <tr>
+                    <th scope="row">Saturday Closure Override</th>
+                    <td>
+                        <label>
+                            <input type="checkbox" name="mtc_saturday_force_closed" value="1" <?php checked( 1, get_option( 'mtc_saturday_force_closed', 0 ) ); ?> />
+                            Force Saturdays closed
+                        </label>
+                        <p class="description">Check this to show Saturday as closed regardless of the time of year. The summer closure window still applies automatically when this is off.</p>
+                    </td>
+                </tr>
             </table>
-            <h2 class="title">Google Rating</h2>
-            <p style="color:#666">Used in the structured data (schema.org) injected into every page. Update when your Google rating or review count changes.</p>
+            <?php submit_button(); ?>
+        </form>
+    </div>
+    <?php
+}
+
+function mtc_google_reviews_page() {
+    ?>
+    <div class="wrap">
+        <h1>Google Reviews</h1>
+        <p style="color:#666">These values update the rating displayed in the trust bar and about strip, and in the structured data (schema.org) injected into every page.</p>
+        <form method="post" action="options.php">
+            <?php settings_fields( 'mtc_google_reviews' ); ?>
             <table class="form-table" role="presentation">
                 <tr>
                     <th scope="row"><label for="mtc_rating_value">Google Rating</label></th>
@@ -189,7 +305,10 @@ function mtc_business_hours_page() {
                 </tr>
                 <tr>
                     <th scope="row"><label for="mtc_rating_count">Number of Reviews</label></th>
-                    <td><input type="text" id="mtc_rating_count" name="mtc_rating_count" value="<?php echo esc_attr( get_option( 'mtc_rating_count', '200' ) ); ?>" class="small-text" placeholder="200" /></td>
+                    <td>
+                        <input type="text" id="mtc_rating_count" name="mtc_rating_count" value="<?php echo esc_attr( get_option( 'mtc_rating_count', '200' ) ); ?>" class="small-text" placeholder="200" />
+                        <p class="description">Used in structured data only — not displayed visibly on the site.</p>
+                    </td>
                 </tr>
             </table>
             <?php submit_button(); ?>
@@ -425,19 +544,19 @@ function mtc_seed_contact_page() {
     <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"},"padding":{"bottom":"20px"}},"border":{"bottom":{"color":"#1e1e1e","style":"solid","width":"1px"}}}} -->
     <div class="wp-block-group">
       <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Address</p><!-- /wp:paragraph -->
-      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="https://maps.google.com/?q=1439+Speers+Rd,+Oakville+ON+L6L+2X5" target="_blank" rel="noopener" style="color:#aaaaaa;text-decoration:none">1439 Speers Rd<br>Oakville, ON L6L 2X5</a></p><!-- /wp:paragraph -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="https://maps.google.com/?q=[mtc_address]" target="_blank" rel="noopener" style="color:#aaaaaa;text-decoration:none">[mtc_address]</a></p><!-- /wp:paragraph -->
     </div>
     <!-- /wp:group -->
     <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"},"padding":{"bottom":"20px"}},"border":{"bottom":{"color":"#1e1e1e","style":"solid","width":"1px"}}}} -->
     <div class="wp-block-group">
       <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Phone</p><!-- /wp:paragraph -->
-      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="tel:9058476665" style="color:#aaaaaa;text-decoration:none">905.847.6665</a></p><!-- /wp:paragraph -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="tel:[mtc_phone_url]" style="color:#aaaaaa;text-decoration:none">[mtc_phone]</a></p><!-- /wp:paragraph -->
     </div>
     <!-- /wp:group -->
     <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"},"padding":{"bottom":"20px"}},"border":{"bottom":{"color":"#1e1e1e","style":"solid","width":"1px"}}}} -->
     <div class="wp-block-group">
       <!-- wp:paragraph {"style":{"color":{"text":"#f3832e"},"typography":{"fontSize":"0.6rem","textTransform":"uppercase","letterSpacing":"2px"}}} --><p style="color:#f3832e;font-size:0.6rem;text-transform:uppercase;letter-spacing:2px">Email</p><!-- /wp:paragraph -->
-      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="mailto:tiresales@mtctire.ca" style="color:#aaaaaa;text-decoration:none">tiresales@mtctire.ca</a></p><!-- /wp:paragraph -->
+      <!-- wp:paragraph {"style":{"color":{"text":"#aaaaaa"},"typography":{"fontSize":"0.8rem"}}} --><p style="color:#aaaaaa;font-size:0.8rem"><a href="mailto:[mtc_email]" style="color:#aaaaaa;text-decoration:none">[mtc_email]</a></p><!-- /wp:paragraph -->
     </div>
     <!-- /wp:group -->
     <!-- wp:group {"style":{"spacing":{"margin":{"bottom":"20px","top":"0"}}}} -->

@@ -32,7 +32,7 @@
   <!-- Phone -->
   <div class="mtc-sidebar-phone">
     <span>Call Us Directly</span>
-    <a href="tel:9058476665">905.847.6665</a>
+    <a href="tel:[mtc_phone_url]">[mtc_phone]</a>
   </div>
 
 </div>
